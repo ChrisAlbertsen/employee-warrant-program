@@ -1,0 +1,53 @@
+﻿@page "/Employees"
+@using System.Net
+@using BlazorApp.Shared
+@inject HttpClient Http
+
+
+<h1>Employees</h1>
+
+@if (employees == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>No. of Warrants</th>
+            <th>Ownership</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var employee in employees)
+        {
+            <tr>
+                <td>@employee.Name</td>
+                <td>@employee.Email</td>
+                <td>@employee.NumberOfWarrants</td>
+                <td>@(decimal.Round(employee.Ownership * 100, 2))%</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private Employee[] employees = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            employees = await Http.GetFromJsonAsync<Employee[]>("/api/GetEmployee") ?? [];
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+    }
+}
