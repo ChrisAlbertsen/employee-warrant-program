@@ -25,10 +25,10 @@ else
         @foreach (var employee in employees)
         {
             <tr>
-                <td>@employee.Name</td>
+                <td>@employee.FullName</td>
                 <td>@employee.Email</td>
-                <td>@employee.NumberOfWarrants</td>
-                <td>@(decimal.Round(employee.Ownership * 100, 2))%</td>
+                <td>@employee.Address</td>
+                <td>@employee.PhoneNumber</td>
             </tr>
         }
         </tbody>

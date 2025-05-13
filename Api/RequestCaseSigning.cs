@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Api;
 
-public class RequestCaseSigningFunction(ILogger<RequestCaseSigningFunction> logger)
+public class RequestCaseSigning(ILogger<RequestCaseSigning> logger)
 {
     [Function("RequestSignatureFunction")]
     public void Run(

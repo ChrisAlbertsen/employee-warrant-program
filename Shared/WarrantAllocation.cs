@@ -8,12 +8,12 @@ namespace BlazorApp.Shared
         public Guid EmployeeId { get; set; }
         public int Quantity { get; set; }
         public decimal StrikePrice { get; set; }
-        public DateTime FullVestingDate { get; set; }
+        public DateOnly FullVestingDate { get; set; }
         public bool IsGranted { get; set; }
-        public DateTime GrantDate { get; set; }
-        public DateTime ExercisePeriodStart { get; set; }
-        public DateTime ExercisePeriodEnd { get; set; }
+        public DateOnly GrantDate { get; set; }
+        public DateOnly ExercisePeriodStart { get; set; }
+        public DateOnly ExercisePeriodEnd { get; set; }
         public bool IsExercised { get; set; }
-        public DateTime? ExerciseDate { get; set; }
+        public DateOnly? ExercisedOnDate { get; set; }
     }
 }
