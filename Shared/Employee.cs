@@ -1,11 +1,14 @@
-﻿namespace BlazorApp.Shared
+﻿using System;
+
+namespace BlazorApp.Shared
 {
     public class Employee
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
+        public Guid Id { get; set; }
+        public string Cpr { get; set; }
+        public string FullName { get; set; }
         public string Email { get; set; }
-        public int NumberOfWarrants { get; set; }
-        public decimal Ownership { get; set; }
+        public string Address { get; set; }
+        public string PhoneNumber { get; set; }
     }
 }
