@@ -42,7 +42,7 @@ else
     {
         try
         {
-            employees = await Http.GetFromJsonAsync<Employee[]>("/api/GetEmployee") ?? [];
+            employees = await Http.GetFromJsonAsync<Employee[]>("/api/GetEmployee?id=1") ?? [];
         }
         catch (Exception ex)
         {
