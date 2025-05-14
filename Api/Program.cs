@@ -1,5 +1,4 @@
 using System;
-using Api.Persistence;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,15 +10,6 @@ var host = new HostBuilder()
     {
         services.AddApplicationInsightsTelemetryWorkerService();
         services.ConfigureFunctionsApplicationInsights();
-        
-        var connectionString = Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTION_STRING");
-        services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
-
-        using (var scope = services.BuildServiceProvider().CreateScope())
-        {
-            var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            dbContext.Database.Migrate();
-        }
     })
     .Build();
 
