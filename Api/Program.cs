@@ -17,10 +17,4 @@ var host = new HostBuilder()
     })
     .Build();
 
-using (var scope = host.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    dbContext.Database.Migrate();
-}
-
 host.Run();
