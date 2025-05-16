@@ -13,7 +13,10 @@ var host = new HostBuilder()
         services.ConfigureFunctionsApplicationInsights();
         
         var connectionString = Environment.GetEnvironmentVariable("SqlConnectionString");
-        services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+        services.AddDbContext<AppDbContext>(options => 
+            options.UseSqlServer(
+                connectionString,
+                option => option.EnableRetryOnFailure()));
     })
     .Build();
 

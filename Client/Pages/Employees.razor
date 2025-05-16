@@ -5,33 +5,38 @@
 
 <h1>Employees</h1>
 
+<button @onclick="CreateCase"></button>
+
 @if (employees == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>No. of Warrants</th>
-            <th>Ownership</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var employee in employees)
-        {
+    <div class = table-scrollable>
+        <table class="table">
+            <thead>
             <tr>
-                <td>@employee.FullName</td>
-                <td>@employee.Email</td>
-                <td>@employee.Address</td>
-                <td>@employee.PhoneNumber</td>
+                <th>Name</th>
+                <th>Email</th>
+                <th>No. of Warrants</th>
+                <th>Ownership</th>
             </tr>
-        }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            @foreach (var employee in employees)
+            {
+                <tr>
+                    <td>@employee.FullName</td>
+                    <td>@employee.Email</td>
+                    <td>@employee.Address</td>
+                    <td>@employee.PhoneNumber</td>
+                </tr>
+            }
+            </tbody>    
+        </table>
+    </div>
+
 }
 
 
@@ -43,6 +48,18 @@ else
         try
         {
             employees = await Http.GetFromJsonAsync<Employee[]>("/api/GetEmployee") ?? [];
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+    }
+
+    private async void CreateCase()
+    {
+        try
+        {
+            await Http.PostAsync("/api/CreateCase?id=AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAA1", null);
         }
         catch (Exception ex)
         {

@@ -7,52 +7,66 @@ namespace Api.Persistence;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options) {
     public DbSet<Employee> Employees { get; set; }
-    public DbSet<Case> Cases { get; set; }
+    public DbSet<WarrantGrantCase> WarrantGrantCases { get; set; }
     public DbSet<WarrantAllocation> WarrantAllocations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<WarrantGrantCase>(warrantGrantCase =>
+        {
+            warrantGrantCase
+                .HasOne(wgc => wgc.Employee)
+                .WithMany(employee => employee.WarrantGrantCases)
+                .HasForeignKey(wgc => wgc.EmployeeId);
+        });
+
+        modelBuilder.Entity<WarrantAllocation>(warrantAllocation =>
+        {
+            warrantAllocation
+                .HasOne(wa => wa.Employee)
+                .WithMany(employee => employee.WarrantAllocations)
+                .HasForeignKey(wa => wa.EmployeeId);
+        });
         
         modelBuilder.Entity<Employee>().HasData(
-            new List<Employee>
-        {
             new Employee
             {
-                Id = new Guid("f134fa70-392d-4d41-9513-a81fbfd7b331"),
-                Cpr = "123456-0000",
-                FullName = "Anna Pihl",
-                Email = "anna.sorensen@example.com",
-                Address = "Langelinie Allé 17, 2100 København Ø",
-                PhoneNumber = "+45 22 33 44 55"
+                Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1"),
+                Cpr = "0101010001",
+                FullName = "Alice Andersen",
+                Email = "alice@example.com",
+                Address = "1 Main Street",
+                PhoneNumber = "12345678"
             },
             new Employee
             {
-                Id = new Guid("a2243995-28a3-4dde-be5f-2ed321197ba8"),
-                Cpr = "150482-5678",
-                FullName = "Mikkel Hansen",
-                Email = "mikkel.hansen@example.com",
-                Address = "Vesterbrogade 100, 1620 København V",
-                PhoneNumber = "+45 40 55 66 77"
+                Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2"),
+                Cpr = "0202020002",
+                FullName = "Bob Bentsen",
+                Email = "bob@example.com",
+                Address = "2 Main Street",
+                PhoneNumber = "23456789"
             },
             new Employee
             {
-                Id = new Guid("6252bab6-e1d6-4b75-9a2b-c0aafcf110a4"),
-                Cpr = "230375-4321",
-                FullName = "Camilla Jensen",
-                Email = "camilla.jensen@example.com",
-                Address = "Åboulevard 39, 1960 Frederiksberg C",
-                PhoneNumber = "+45 31 22 11 00"
+                Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3"),
+                Cpr = "0303030003",
+                FullName = "Clara Christensen",
+                Email = "clara@example.com",
+                Address = "3 Main Street",
+                PhoneNumber = "34567890"
             },
             new Employee
             {
-                Id = new Guid("5ae82997-7eb2-4c08-b7be-95c7dcc373b1"),
-                Cpr = "071291-8765",
-                FullName = "Jonas Nielsen",
-                Email = "jonas.nielsen@example.com",
-                Address = "Havneholmen 29, 1561 København V",
-                PhoneNumber = "+45 50 60 70 80"
+                Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4"),
+                Cpr = "0404040004",
+                FullName = "David Dahl",
+                Email = "david@example.com",
+                Address = "4 Main Street",
+                PhoneNumber = "45678901"
             }
-        });
+        );
     }
 }
