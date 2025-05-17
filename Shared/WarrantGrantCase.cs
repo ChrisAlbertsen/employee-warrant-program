@@ -14,5 +14,5 @@ public class WarrantGrantCase
     public bool IsSignatureRequested { get; set; } = false;
     public bool IsApprovedByBoard { get; set; } = false;
     public bool IsRegisteredBySkat { get; set; } = false;
-    public bool isGranted { get; set; }
+    public bool IsGranted { get; set; }
 }
