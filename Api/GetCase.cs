@@ -39,7 +39,11 @@ public class GetCase(AppDbContext dbContext, ILogger<GetEmployee> logger)
 
     private List<WarrantGrantCase> GetAllCases()
     {
-        var cases = dbContext.WarrantGrantCases.ToListAsync().Result;
+        var cases = dbContext
+            .WarrantGrantCases
+            .Include(wcg => wcg.Employee)
+            .ToListAsync()
+            .Result;
         return cases;
     }
 }
