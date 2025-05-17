@@ -1,78 +1,63 @@
 ﻿@page "/Employees"
+@using BlazorApp.Client.Interfaces
 @using BlazorApp.Shared
-@inject HttpClient Http
+@using Radzen.Blazor
+@using Radzen
 
+@inject IEmployeeService EmployeeService
+@inject IWarrantGrantCaseService WarrantGrantCaseService
 
 <h1>Employees</h1>
 
-<button @onclick="CreateCase"></button>
-
-@if (employees == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <div class=table-scrollable>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>No. of Warrants</th>
-                <th>Ownership</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var employee in employees)
+<RadzenStack Gap="1rem">
+    <RadzenCard Variant="Variant.Outlined">
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1.5rem;" Wrap="FlexWrap.Wrap">
+            <RadzenButton Click="@ClearSelection" Text="Clear Selection" />
+            @if (selectedEmployees?.Any() == true)
             {
-                <tr class="@(employee == selectedEmployee ? "table-active" : "")"
-                    onclick="() => SelectEmployee(employee)">
-                    <td>@employee.FullName</td>
-                    <td>@employee.Email</td>
-                    <td>@employee.Address</td>
-                    <td>@employee.PhoneNumber</td>
-                </tr>
+                <div>
+                    Selected Employee: @selectedEmployees[0].FullName
+                </div>
             }
-            </tbody>
-        </table>
-    </div>
-}
+        </RadzenStack>
+    </RadzenCard>
+    
+    <RadzenCard Variant="Variant.Outlined">
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1.5rem;" Wrap="FlexWrap.Wrap">
+            <RadzenButton Click="@CreateWarrantGrantCase" Text="Create case" />
+        </RadzenStack>
+    </RadzenCard>
 
+    <RadzenDataGrid FilterPopupRenderMode="PopupRenderMode.OnDemand" AllowPaging="true" PageSize="4" Data="@employees" ColumnWidth="200px"
+                SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedEmployees>
+        <Columns>
+            <RadzenDataGridColumn Property="@nameof(Employee.FullName)" Title="Name" />
+            <RadzenDataGridColumn Property="@nameof(Employee.Email)" Title="Email" />
+            <RadzenDataGridColumn Property="@nameof(Employee.PhoneNumber)" Title="Phone" />
+            <RadzenDataGridColumn Property="@nameof(Employee.Address)" Title="Address" />
+        </Columns>
+    </RadzenDataGrid>
+</RadzenStack>
 
 @code {
-    private Employee[] employees = [];
-    private Employee? selectedEmployee;
+    IEnumerable<Employee> employees;
+    IList<Employee> selectedEmployees;
+
+    void ClearSelection()
+    {
+        selectedEmployees = null;
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine("Initializing employees page!");
-        try
-        {
-            employees = await Http.GetFromJsonAsync<Employee[]>("/api/GetEmployee") ?? [];
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.ToString());
-        }
+        await base.OnInitializedAsync();
+
+        employees = await EmployeeService.GetEmployeesAsync();
+        selectedEmployees = employees.Take(1).ToList();
     }
 
-    void SelectEmployee(Employee employee)
+    private async Task CreateWarrantGrantCase()
     {
-        Console.WriteLine("employee selected!");
-        selectedEmployee = selectedEmployee == employee ? null : employee;
+        await WarrantGrantCaseService.CreateCaseAsync(selectedEmployees[0].Id);
     }
-
-    private async void CreateCase()
-    {
-        try
-        {
-            await Http.PostAsync($"/api/CreateCase?id={selectedEmployee.Id}", null);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.ToString());
-        }
-    }
-
 }

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Net;
+using System.Threading.Tasks;
+using Api.Exceptions;
 using Api.Persistence;
 using BlazorApp.Shared;
 using Microsoft.Azure.Functions.Worker;
@@ -11,17 +13,20 @@ namespace Api;
 public class CreateCase(AppDbContext dbContext, ILogger<GetEmployee> logger)
 {
     [Function("CreateCase")]
-    public HttpResponseData Run(
+    public async Task<HttpResponseData> Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post")]
         HttpRequestData req,
         Guid id)
     {
         logger.LogInformation("CreateCase function request was made.");
-        CreateWarrantGrantCase(id);
-        return req.CreateResponse(HttpStatusCode.OK);
+        var warrantGrantCase = await CreateWarrantGrantCase(id);
+        
+        var response = req.CreateResponse(HttpStatusCode.OK);
+        await response.WriteAsJsonAsync(warrantGrantCase);
+        return response;
     }
 
-    private void CreateWarrantGrantCase(Guid id)
+    private async Task<WarrantGrantCase> CreateWarrantGrantCase(Guid id)
     {
         var warrantGrantCase = new WarrantGrantCase
         {
@@ -29,7 +34,10 @@ public class CreateCase(AppDbContext dbContext, ILogger<GetEmployee> logger)
         };
 
         dbContext.WarrantGrantCases.Add(warrantGrantCase);
-        dbContext.SaveChanges();
-        Console.WriteLine("Warrant grant case created.");
+        var result = await dbContext.SaveChangesAsync();
+        if (result != 1) throw new WarrantGrantCaseNotCreatedException(id);
+        logger.LogInformation("WarrantGrantCase created.");
+        
+        return warrantGrantCase;
     }
 }
