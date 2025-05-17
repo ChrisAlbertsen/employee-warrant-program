@@ -18,7 +18,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         {
             warrantGrantCase
                 .HasOne(wgc => wgc.Employee)
-                .WithMany(employee => employee.WarrantGrantCases)
+                .WithMany()
                 .HasForeignKey(wgc => wgc.EmployeeId);
         });
 

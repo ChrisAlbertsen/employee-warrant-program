@@ -29,7 +29,7 @@
     </RadzenCard>
 
     <RadzenDataGrid FilterPopupRenderMode="PopupRenderMode.OnDemand" AllowPaging="true" PageSize="4" Data="@employees" ColumnWidth="200px"
-                SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedEmployees>
+                SelectionMode="DataGridSelectionMode.Single" @bind-Value="@selectedEmployees">
         <Columns>
             <RadzenDataGridColumn Property="@nameof(Employee.FullName)" Title="Name" />
             <RadzenDataGridColumn Property="@nameof(Employee.Email)" Title="Email" />
@@ -41,7 +41,7 @@
 
 @code {
     IEnumerable<Employee> employees;
-    IList<Employee> selectedEmployees;
+    IList<Employee>? selectedEmployees;
 
     void ClearSelection()
     {
@@ -53,7 +53,6 @@
         await base.OnInitializedAsync();
 
         employees = await EmployeeService.GetEmployeesAsync();
-        selectedEmployees = employees.Take(1).ToList();
     }
 
     private async Task CreateWarrantGrantCase()

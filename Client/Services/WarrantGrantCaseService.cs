@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -15,5 +16,11 @@ public class WarrantGrantCaseService(HttpClient httpClient) : IWarrantGrantCaseS
         result.EnsureSuccessStatusCode();
         var warrantGrantCase = await result.Content.ReadFromJsonAsync<WarrantGrantCase>();
         return warrantGrantCase;
+    }
+
+    public async Task<IEnumerable<WarrantGrantCase>> GetAllCasesAsync()
+    {
+        var warrantGrantCases = await httpClient.GetFromJsonAsync<IEnumerable<WarrantGrantCase>>($"api/GetCase");
+        return warrantGrantCases ?? Array.Empty<WarrantGrantCase>();
     }
 }
