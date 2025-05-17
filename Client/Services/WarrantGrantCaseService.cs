@@ -20,7 +20,7 @@ public class WarrantGrantCaseService(HttpClient httpClient) : IWarrantGrantCaseS
 
     public async Task<IEnumerable<WarrantGrantCase>> GetAllCasesAsync()
     {
-        var warrantGrantCases = await httpClient.GetFromJsonAsync<IEnumerable<WarrantGrantCase>>($"api/GetCase");
+        var warrantGrantCases = await httpClient.GetFromJsonAsync<IEnumerable<WarrantGrantCase>>("api/GetCase");
         return warrantGrantCases ?? Array.Empty<WarrantGrantCase>();
     }
 }

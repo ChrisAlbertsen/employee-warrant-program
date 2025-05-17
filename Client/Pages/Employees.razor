@@ -1,8 +1,8 @@
 ﻿@page "/Employees"
 @using BlazorApp.Client.Interfaces
 @using BlazorApp.Shared
-@using Radzen.Blazor
 @using Radzen
+@using Radzen.Blazor
 
 @inject IEmployeeService EmployeeService
 @inject IWarrantGrantCaseService WarrantGrantCaseService
@@ -11,8 +11,9 @@
 
 <RadzenStack Gap="1rem">
     <RadzenCard Variant="Variant.Outlined">
-        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1.5rem;" Wrap="FlexWrap.Wrap">
-            <RadzenButton Click="@ClearSelection" Text="Clear Selection" />
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1.5rem;"
+                     Wrap="FlexWrap.Wrap">
+            <RadzenButton Click="@ClearSelection" Text="Clear Selection"/>
             @if (selectedEmployees?.Any() == true)
             {
                 <div>
@@ -21,20 +22,22 @@
             }
         </RadzenStack>
     </RadzenCard>
-    
+
     <RadzenCard Variant="Variant.Outlined">
-        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1.5rem;" Wrap="FlexWrap.Wrap">
-            <RadzenButton Click="@CreateWarrantGrantCase" Text="Create case" />
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1.5rem;"
+                     Wrap="FlexWrap.Wrap">
+            <RadzenButton Click="@CreateWarrantGrantCase" Text="Create case"/>
         </RadzenStack>
     </RadzenCard>
 
-    <RadzenDataGrid FilterPopupRenderMode="PopupRenderMode.OnDemand" AllowPaging="true" PageSize="4" Data="@employees" ColumnWidth="200px"
-                SelectionMode="DataGridSelectionMode.Single" @bind-Value="@selectedEmployees">
+    <RadzenDataGrid FilterPopupRenderMode="PopupRenderMode.OnDemand" AllowPaging="true" PageSize="4" Data="@employees"
+                    ColumnWidth="200px"
+                    SelectionMode="DataGridSelectionMode.Single" @bind-Value="@selectedEmployees">
         <Columns>
-            <RadzenDataGridColumn Property="@nameof(Employee.FullName)" Title="Name" />
-            <RadzenDataGridColumn Property="@nameof(Employee.Email)" Title="Email" />
-            <RadzenDataGridColumn Property="@nameof(Employee.PhoneNumber)" Title="Phone" />
-            <RadzenDataGridColumn Property="@nameof(Employee.Address)" Title="Address" />
+            <RadzenDataGridColumn Property="@nameof(Employee.FullName)" Title="Name"/>
+            <RadzenDataGridColumn Property="@nameof(Employee.Email)" Title="Email"/>
+            <RadzenDataGridColumn Property="@nameof(Employee.PhoneNumber)" Title="Phone"/>
+            <RadzenDataGridColumn Property="@nameof(Employee.Address)" Title="Address"/>
         </Columns>
     </RadzenDataGrid>
 </RadzenStack>
@@ -59,4 +62,5 @@
     {
         await WarrantGrantCaseService.CreateCaseAsync(selectedEmployees[0].Id);
     }
+
 }

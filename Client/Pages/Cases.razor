@@ -1,32 +1,35 @@
 ﻿@page "/Cases"
 @using BlazorApp.Client.Interfaces
-@using BlazorApp.Client.Services
 @using BlazorApp.Shared
-@using Radzen.Blazor
 @using Radzen
+@using Radzen.Blazor
 
 @inject IWarrantGrantCaseService WarrantGrantCaseService
 
 <h1>Employees</h1>
 
 <RadzenStack Gap="1rem">
-    <RadzenDataGrid FilterPopupRenderMode="PopupRenderMode.OnDemand" AllowPaging="true" PageSize="10" Data="@warrantGrantCases" ColumnWidth="200px">
+    <RadzenDataGrid FilterPopupRenderMode="PopupRenderMode.OnDemand" AllowPaging="true" PageSize="10"
+                    Data="@warrantGrantCases" ColumnWidth="200px">
         <Columns>
             <RadzenDataGridColumn Property="@($"{nameof(WarrantGrantCase.Employee)}.{nameof(Employee.FullName)}")"
-                                  Title="Employee Name" />
+                                  Title="Employee Name"/>
             <RadzenDataGridColumn Property="@nameof(WarrantGrantCase.StartDate)" Title="Case start date"/>
-            <RadzenDataGridColumn Property="@nameof(WarrantGrantCase.IsSignatureRequested)" Title="Is signature requested"/>
-            <RadzenDataGridColumn Property="@nameof(WarrantGrantCase.IsRegisteredBySkat)" Title="Is registered by SKAT"/>
+            <RadzenDataGridColumn Property="@nameof(WarrantGrantCase.IsSignatureRequested)"
+                                  Title="Is signature requested"/>
+            <RadzenDataGridColumn Property="@nameof(WarrantGrantCase.IsRegisteredBySkat)"
+                                  Title="Is registered by SKAT"/>
         </Columns>
     </RadzenDataGrid>
 </RadzenStack>
 
 @code {
     IEnumerable<WarrantGrantCase> warrantGrantCases;
-    
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         warrantGrantCases = await WarrantGrantCaseService.GetAllCasesAsync();
     }
+
 }

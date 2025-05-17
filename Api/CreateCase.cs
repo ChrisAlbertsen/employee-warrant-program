@@ -20,7 +20,7 @@ public class CreateCase(AppDbContext dbContext, ILogger<GetEmployee> logger)
     {
         logger.LogInformation("CreateCase function request was made.");
         var warrantGrantCase = await CreateWarrantGrantCase(id);
-        
+
         var response = req.CreateResponse(HttpStatusCode.OK);
         await response.WriteAsJsonAsync(warrantGrantCase);
         return response;
@@ -37,7 +37,7 @@ public class CreateCase(AppDbContext dbContext, ILogger<GetEmployee> logger)
         var result = await dbContext.SaveChangesAsync();
         if (result != 1) throw new WarrantGrantCaseNotCreatedException(id);
         logger.LogInformation("WarrantGrantCase created.");
-        
+
         return warrantGrantCase;
     }
 }
