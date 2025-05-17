@@ -13,7 +13,7 @@
 }
 else
 {
-    <div class = table-scrollable>
+    <div class=table-scrollable>
         <table class="table">
             <thead>
             <tr>
@@ -26,25 +26,27 @@ else
             <tbody>
             @foreach (var employee in employees)
             {
-                <tr>
+                <tr class="@(employee == selectedEmployee ? "table-active" : "")"
+                    onclick="() => SelectEmployee(employee)">
                     <td>@employee.FullName</td>
                     <td>@employee.Email</td>
                     <td>@employee.Address</td>
                     <td>@employee.PhoneNumber</td>
                 </tr>
             }
-            </tbody>    
+            </tbody>
         </table>
     </div>
-
 }
 
 
 @code {
     private Employee[] employees = [];
+    private Employee? selectedEmployee;
 
     protected override async Task OnInitializedAsync()
     {
+        Console.WriteLine("Initializing employees page!");
         try
         {
             employees = await Http.GetFromJsonAsync<Employee[]>("/api/GetEmployee") ?? [];
@@ -55,15 +57,22 @@ else
         }
     }
 
+    void SelectEmployee(Employee employee)
+    {
+        Console.WriteLine("employee selected!");
+        selectedEmployee = selectedEmployee == employee ? null : employee;
+    }
+
     private async void CreateCase()
     {
         try
         {
-            await Http.PostAsync("/api/CreateCase?id=AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAA1", null);
+            await Http.PostAsync($"/api/CreateCase?id={selectedEmployee.Id}", null);
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.ToString());
         }
     }
+
 }

@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using BlazorApp.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Persistence;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options) {
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+{
     public DbSet<Employee> Employees { get; set; }
     public DbSet<WarrantGrantCase> WarrantGrantCases { get; set; }
     public DbSet<WarrantAllocation> WarrantAllocations { get; set; }
@@ -29,7 +29,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 .WithMany(employee => employee.WarrantAllocations)
                 .HasForeignKey(wa => wa.EmployeeId);
         });
-        
+
         modelBuilder.Entity<Employee>().HasData(
             new Employee
             {

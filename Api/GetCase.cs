@@ -11,35 +11,35 @@ namespace Api;
 
 public class GetCase(AppDbContext dbContext, ILogger<GetEmployee> logger)
 {
-        [Function("GetCase")]
-        public HttpResponseData Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get")]
-            HttpRequestData req,
-            string? fullName)
-        {
-            logger.LogInformation("GetCase function request was made.");
-            var employee = fullName is null ? GetAllCases() : SearchCases(fullName);
-            var response = req.CreateResponse();
-            response.WriteAsJsonAsync(employee);
-            return response;
-        }
+    [Function("GetCase")]
+    public HttpResponseData Run(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get")]
+        HttpRequestData req,
+        string? fullName)
+    {
+        logger.LogInformation("GetCase function request was made.");
+        var employee = fullName is null ? GetAllCases() : SearchCases(fullName);
+        var response = req.CreateResponse();
+        response.WriteAsJsonAsync(employee);
+        return response;
+    }
 
-        private List<WarrantGrantCase> SearchCases(string nameQuery)
-        {
-            if (string.IsNullOrWhiteSpace(nameQuery))
-                return [];
+    private List<WarrantGrantCase> SearchCases(string nameQuery)
+    {
+        if (string.IsNullOrWhiteSpace(nameQuery))
+            return [];
 
-            var cases = dbContext
-                .WarrantGrantCases
-                .Where(e => e.Employee.FullName.ToLower().Contains(nameQuery.ToLower()))
-                .ToList();
+        var cases = dbContext
+            .WarrantGrantCases
+            .Where(e => e.Employee.FullName.ToLower().Contains(nameQuery.ToLower()))
+            .ToList();
 
-            return cases;
-        }
+        return cases;
+    }
 
-        private List<WarrantGrantCase> GetAllCases()
-        {
-            var cases = dbContext.WarrantGrantCases.ToListAsync().Result;
-            return cases;
-        }
+    private List<WarrantGrantCase> GetAllCases()
+    {
+        var cases = dbContext.WarrantGrantCases.ToListAsync().Result;
+        return cases;
+    }
 }

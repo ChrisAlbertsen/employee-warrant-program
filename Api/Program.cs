@@ -11,9 +11,9 @@ var host = new HostBuilder()
     {
         services.AddApplicationInsightsTelemetryWorkerService();
         services.ConfigureFunctionsApplicationInsights();
-        
+
         var connectionString = Environment.GetEnvironmentVariable("SqlConnectionString");
-        services.AddDbContext<AppDbContext>(options => 
+        services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(
                 connectionString,
                 option => option.EnableRetryOnFailure()));
