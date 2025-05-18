@@ -11,7 +11,10 @@ using Microsoft.Extensions.Logging;
 
 namespace Api.Functions.ConfirmationLetter;
 
-public class SendConfirmationLetter(AppDbContext dbContext, ILogger<SendConfirmationLetter> logger, ISignatureService signatureService)
+public class SendConfirmationLetter(
+    AppDbContext dbContext,
+    ILogger<SendConfirmationLetter> logger,
+    ISignatureService signatureService)
 {
     [Function("SendConfirmationLetter")]
     public async Task Run(

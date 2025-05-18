@@ -2,8 +2,7 @@
 
 namespace Api.Exceptions;
 
-public class WarrantGrantException(string message) : 
+public class WarrantGrantException(string message) :
     Exception(message)
 {
-    
 }

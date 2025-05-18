@@ -15,8 +15,9 @@
             <RadzenDataGridColumn Property="@($"{nameof(WarrantGrantCase.Employee)}.{nameof(Employee.FullName)}")"
                                   Title="Employee Name"/>
             <RadzenDataGridColumn Property="@nameof(WarrantGrantCase.StartDate)" Title="Case start date"/>
-            <RadzenDataGridColumn Property="@($"{nameof(WarrantGrantCase.ConfirmationLetter)}.{nameof(ConfirmationLetter.IsSent)}")"
-                                  Title="Is signature requested"/>
+            <RadzenDataGridColumn
+                Property="@($"{nameof(WarrantGrantCase.ConfirmationLetter)}.{nameof(ConfirmationLetter.IsSent)}")"
+                Title="Is signature requested"/>
             <RadzenDataGridColumn Property="@nameof(WarrantGrantCase.IsRegisteredBySkat)"
                                   Title="Is registered by SKAT"/>
         </Columns>

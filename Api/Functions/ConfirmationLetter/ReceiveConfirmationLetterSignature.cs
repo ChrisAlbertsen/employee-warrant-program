@@ -25,13 +25,14 @@ public class ReceiveConfirmationLetterSignature(
         return response;
     }
 
-    private void RegisterConfirmationLetterSignature(Guid id)
+    private void RegisterConfirmationLetterSignature(Guid confirmationLetterId)
     {
         var confirmationLetter = dbContext
             .ConfirmationLetters
-            .FirstOrDefault(cl => cl.Id == id);
+            .FirstOrDefault(cl => cl.Id == confirmationLetterId);
 
-        if (confirmationLetter == null) throw new ConfirmationLetterException($"Confirmation letter not found for id: {id}");
+        if (confirmationLetter == null)
+            throw new ConfirmationLetterException($"Confirmation letter not found for id: {confirmationLetterId}");
 
         confirmationLetter.IsSigned = true;
 

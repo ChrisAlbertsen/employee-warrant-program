@@ -10,6 +10,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Employee> Employees { get; set; }
     public DbSet<WarrantGrantCase> WarrantGrantCases { get; set; }
     public DbSet<WarrantAllocation> WarrantAllocations { get; set; }
+    public DbSet<ApprovalGroup> ApprovalGroups { get; set; }
     public DbSet<ConfirmationLetter> ConfirmationLetters { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -34,6 +35,11 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 .HasOne(wa => wa.Employee)
                 .WithMany(employee => employee.WarrantAllocations)
                 .HasForeignKey(wa => wa.EmployeeId);
+
+            warrantAllocation
+                .HasOne<ApprovalGroup>()
+                .WithMany(ag => ag.PendingAllocations)
+                .HasForeignKey(pwa => pwa.ApprovalGroupId);
         });
 
         modelBuilder.Entity<ConfirmationLetter>(confirmationLetter =>
@@ -83,7 +89,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             }
         );
     }
-    
+
     public async Task<int> EnsuredSaveChangesAsync(int minExpectedChanges = 1)
     {
         var affectedRows = await SaveChangesAsync();
@@ -93,7 +99,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 $"Expected at least {minExpectedChanges} database changes, but only {affectedRows} were applied.");
         return affectedRows;
     }
-    
+
     public int EnsuredSaveChanges(int minExpectedChanges = 1)
     {
         var affectedRows = SaveChanges();

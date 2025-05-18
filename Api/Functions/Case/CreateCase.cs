@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
-using Api.Exceptions;
 using Api.Functions.Employee;
 using Api.Persistence;
 using BlazorApp.Shared;

@@ -22,6 +22,17 @@ namespace Api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("BlazorApp.Shared.ApprovalGroup", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApprovalGroups");
+                });
+
             modelBuilder.Entity("BlazorApp.Shared.ConfirmationLetter", b =>
                 {
                     b.Property<Guid>("Id")
@@ -112,6 +123,12 @@ namespace Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ApprovalGroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ApprovalGroupId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("EmployeeId")
                         .HasColumnType("uniqueidentifier");
 
@@ -140,6 +157,10 @@ namespace Api.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApprovalGroupId");
+
+                    b.HasIndex("ApprovalGroupId1");
 
                     b.HasIndex("EmployeeId");
 
@@ -188,11 +209,21 @@ namespace Api.Migrations
 
             modelBuilder.Entity("BlazorApp.Shared.WarrantAllocation", b =>
                 {
+                    b.HasOne("BlazorApp.Shared.ApprovalGroup", null)
+                        .WithMany("PendingAllocations")
+                        .HasForeignKey("ApprovalGroupId");
+
+                    b.HasOne("BlazorApp.Shared.ApprovalGroup", "ApprovalGroup")
+                        .WithMany()
+                        .HasForeignKey("ApprovalGroupId1");
+
                     b.HasOne("BlazorApp.Shared.Employee", "Employee")
                         .WithMany("WarrantAllocations")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ApprovalGroup");
 
                     b.Navigation("Employee");
                 });
@@ -214,6 +245,11 @@ namespace Api.Migrations
                     b.Navigation("ConfirmationLetter");
 
                     b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("BlazorApp.Shared.ApprovalGroup", b =>
+                {
+                    b.Navigation("PendingAllocations");
                 });
 
             modelBuilder.Entity("BlazorApp.Shared.Employee", b =>

@@ -7,6 +7,8 @@ public class WarrantAllocation
     public Guid Id { get; set; }
     public Guid EmployeeId { get; set; }
     public Employee Employee { get; set; }
+    public Guid? ApprovalGroupId { get; set; }
+    public ApprovalGroup? ApprovalGroup { get; set; }
     public int Quantity { get; set; }
     public decimal StrikePrice { get; set; }
     public DateOnly FullVestingDate { get; set; }
