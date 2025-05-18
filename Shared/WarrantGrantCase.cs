@@ -20,7 +20,6 @@ public class WarrantGrantCase
     public Guid? WarrantAllocationId { get; set; }
     public DateOnly StartDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
     public DateOnly? EndDate { get; set; }
-    public bool IsSignatureRequested { get; set; } = false;
     public bool IsApprovedByBoard { get; set; } = false;
     public bool IsRegisteredBySkat { get; set; } = false;
     public bool IsGranted { get; set; }

@@ -22,6 +22,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 .HasOne(wgc => wgc.Employee)
                 .WithMany()
                 .HasForeignKey(wgc => wgc.EmployeeId);
+
+            warrantGrantCase.Navigation(wcg =>
+                    wcg.ConfirmationLetter)
+                .AutoInclude();
         });
 
         modelBuilder.Entity<WarrantAllocation>(warrantAllocation =>

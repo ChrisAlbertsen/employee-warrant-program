@@ -31,7 +31,4 @@
         <Using Include="System.Threading.ExecutionContext" Alias="ExecutionContext"/>
         <ProjectReference Include="..\Shared\Shared.csproj"/>
     </ItemGroup>
-    <ItemGroup>
-        <Folder Include="Migrations\"/>
-    </ItemGroup>
 </Project>

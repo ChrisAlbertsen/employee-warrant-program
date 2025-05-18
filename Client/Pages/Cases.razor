@@ -6,7 +6,7 @@
 
 @inject IWarrantGrantCaseService WarrantGrantCaseService
 
-<h1>Employees</h1>
+<h1>Cases</h1>
 
 <RadzenStack Gap="1rem">
     <RadzenDataGrid FilterPopupRenderMode="PopupRenderMode.OnDemand" AllowPaging="true" PageSize="10"
@@ -15,7 +15,7 @@
             <RadzenDataGridColumn Property="@($"{nameof(WarrantGrantCase.Employee)}.{nameof(Employee.FullName)}")"
                                   Title="Employee Name"/>
             <RadzenDataGridColumn Property="@nameof(WarrantGrantCase.StartDate)" Title="Case start date"/>
-            <RadzenDataGridColumn Property="@nameof(WarrantGrantCase.IsSignatureRequested)"
+            <RadzenDataGridColumn Property="@($"{nameof(WarrantGrantCase.ConfirmationLetter)}.{nameof(ConfirmationLetter.IsSent)}")"
                                   Title="Is signature requested"/>
             <RadzenDataGridColumn Property="@nameof(WarrantGrantCase.IsRegisteredBySkat)"
                                   Title="Is registered by SKAT"/>
@@ -30,6 +30,7 @@
     {
         await base.OnInitializedAsync();
         warrantGrantCases = await WarrantGrantCaseService.GetAllCasesAsync();
+        Console.WriteLine("wait here!");
     }
 
 }
