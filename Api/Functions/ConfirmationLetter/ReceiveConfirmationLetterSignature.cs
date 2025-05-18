@@ -31,7 +31,7 @@ public class ReceiveConfirmationLetterSignature(
             .ConfirmationLetters
             .FirstOrDefault(cl => cl.Id == id);
 
-        if (confirmationLetter == null) throw new SignedConfirmationLetterDoesNotExistException(id);
+        if (confirmationLetter == null) throw new ConfirmationLetterException($"Confirmation letter not found for id: {id}");
 
         confirmationLetter.IsSigned = true;
 

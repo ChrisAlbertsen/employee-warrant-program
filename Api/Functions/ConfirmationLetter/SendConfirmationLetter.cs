@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Api.Exceptions;
+using Api.Interfaces;
 using Api.Persistence;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Extensions.Sql;
@@ -10,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Api.Functions.ConfirmationLetter;
 
-public class SendConfirmationLetter(AppDbContext dbContext, ILogger<SendConfirmationLetter> logger)
+public class SendConfirmationLetter(AppDbContext dbContext, ILogger<SendConfirmationLetter> logger, ISignatureService signatureService)
 {
     [Function("SendConfirmationLetter")]
     public async Task Run(
@@ -32,7 +33,11 @@ public class SendConfirmationLetter(AppDbContext dbContext, ILogger<SendConfirma
             .FirstOrDefault(wgc => wgc.ConfirmationLetterId == confirmationLetter.Id)?
             .Employee;
 
-        logger.LogInformation($"Sending confirmation letter to: {employee.FullName}");
+        if (employee == null)
+            throw new WarrantGrantException(
+                $"Employee for WarrantGrantCase with id: {confirmationLetter.WarrantGrantCaseId} not found");
+
+        await signatureService.RequestSignatureAsync(employee);
         await MarkConfirmationLetterSent(confirmationLetter);
     }
 
