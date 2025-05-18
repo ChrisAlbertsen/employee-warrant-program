@@ -1,24 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using Api.Exceptions;
 using Api.Persistence;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Api.Functions.ConfirmationLetter;
 
-public class ReceiveConfirmationLetterSignature(AppDbContext dbContext, ILogger<ReceiveConfirmationLetterSignature> logger)
+public class ReceiveConfirmationLetterSignature(
+    AppDbContext dbContext,
+    ILogger<ReceiveConfirmationLetterSignature> logger)
 {
     [Function("ConfirmationLetterSigned")]
     public HttpResponseData Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post")]
         HttpRequestData req,
-        Guid id )
+        Guid id)
     {
         logger.LogInformation("ConfirmationLetterSigned was called");
         RegisterConfirmationLetterSignature(id);
@@ -31,13 +30,12 @@ public class ReceiveConfirmationLetterSignature(AppDbContext dbContext, ILogger<
         var confirmationLetter = dbContext
             .ConfirmationLetters
             .FirstOrDefault(cl => cl.Id == id);
-        
+
         if (confirmationLetter == null) throw new SignedConfirmationLetterDoesNotExistException(id);
-        
+
         confirmationLetter.IsSigned = true;
-        
+
         var result = dbContext.SaveChanges();
         if (result != 1) throw new ConfirmationLetterSignatureNotRegistered(id);
     }
-
 }

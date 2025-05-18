@@ -1,10 +1,17 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 
 namespace BlazorApp.Shared;
 
 public class WarrantGrantCase
 {
+    public WarrantGrantCase()
+    {
+        ConfirmationLetter = new ConfirmationLetter
+        {
+            WarrantGrantCaseId = Id
+        };
+    }
+
     public Guid Id { get; set; } = Guid.NewGuid();
     public required Guid EmployeeId { get; set; }
     public Employee Employee { get; set; }
@@ -17,12 +24,4 @@ public class WarrantGrantCase
     public bool IsApprovedByBoard { get; set; } = false;
     public bool IsRegisteredBySkat { get; set; } = false;
     public bool IsGranted { get; set; }
-    
-    public WarrantGrantCase()
-    {
-        ConfirmationLetter = new ConfirmationLetter
-        {
-            WarrantGrantCaseId = this.Id
-        };
-    }
 }

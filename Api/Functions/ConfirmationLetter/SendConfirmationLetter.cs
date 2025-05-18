@@ -22,11 +22,8 @@ public class SendConfirmationLetter(AppDbContext dbContext, ILogger<SendConfirma
         var insertChanges = changes
             .Where(c => c.Operation == SqlChangeOperation.Insert)
             .ToList();
-        
-        foreach (var change in insertChanges)
-        {
-            await SendLetter(change.Item);
-        }
+
+        foreach (var change in insertChanges) await SendLetter(change.Item);
     }
 
     private async Task SendLetter(BlazorApp.Shared.ConfirmationLetter confirmationLetter)
@@ -35,16 +32,16 @@ public class SendConfirmationLetter(AppDbContext dbContext, ILogger<SendConfirma
             .WarrantGrantCases.Include(warrantGrantCase => warrantGrantCase.Employee)
             .FirstOrDefault(wgc => wgc.ConfirmationLetterId == confirmationLetter.Id)?
             .Employee;
-        
+
         logger.LogInformation($"Sending confirmation letter to: {employee.FullName}");
         await MarkConfirmationLetterSent(confirmationLetter);
     }
 
     private async Task MarkConfirmationLetterSent(BlazorApp.Shared.ConfirmationLetter confirmationLetter)
     {
-        confirmationLetter.IsSent = true;        
+        confirmationLetter.IsSent = true;
         dbContext.Attach(confirmationLetter).State = EntityState.Modified;
         var result = await dbContext.SaveChangesAsync();
-        if(result == 0) throw new ConfirmationLetterUpdateFailedException(confirmationLetter.Id);
+        if (result == 0) throw new ConfirmationLetterUpdateFailedException(confirmationLetter.Id);
     }
 }
