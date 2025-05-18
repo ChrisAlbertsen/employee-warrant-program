@@ -1,5 +1,7 @@
 using System;
+using Api.Interfaces;
 using Api.Persistence;
+using Api.Services;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +13,7 @@ var host = new HostBuilder()
     {
         services.AddApplicationInsightsTelemetryWorkerService();
         services.ConfigureFunctionsApplicationInsights();
+        services.AddSingleton<ISignatureService, DocumentSignatureService>();
 
         var connectionString = Environment.GetEnvironmentVariable("SqlConnectionString");
         services.AddDbContext<AppDbContext>(options =>
