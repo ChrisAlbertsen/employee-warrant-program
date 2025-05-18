@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Api.Persistence;
-using BlazorApp.Shared;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Api;
+namespace Api.Functions.Employee;
 
 public class GetEmployee(AppDbContext dbContext, ILogger<GetEmployee> logger)
 {
@@ -25,7 +24,7 @@ public class GetEmployee(AppDbContext dbContext, ILogger<GetEmployee> logger)
         return response;
     }
 
-    private List<Employee> SearchEmployee(string nameQuery)
+    private List<BlazorApp.Shared.Employee> SearchEmployee(string nameQuery)
     {
         if (string.IsNullOrWhiteSpace(nameQuery))
             return [];
@@ -38,7 +37,7 @@ public class GetEmployee(AppDbContext dbContext, ILogger<GetEmployee> logger)
         return employees;
     }
 
-    private List<Employee> GetAllEmployees()
+    private List<BlazorApp.Shared.Employee> GetAllEmployees()
     {
         var employees = dbContext.Employees.ToListAsync().Result;
         return employees;

@@ -2,13 +2,14 @@
 using System.Net;
 using System.Threading.Tasks;
 using Api.Exceptions;
+using Api.Functions.Employee;
 using Api.Persistence;
 using BlazorApp.Shared;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 
-namespace Api;
+namespace Api.Functions.Case;
 
 public class CreateCase(AppDbContext dbContext, ILogger<GetEmployee> logger)
 {
@@ -35,7 +36,7 @@ public class CreateCase(AppDbContext dbContext, ILogger<GetEmployee> logger)
 
         dbContext.WarrantGrantCases.Add(warrantGrantCase);
         var result = await dbContext.SaveChangesAsync();
-        if (result != 1) throw new WarrantGrantCaseNotCreatedException(id);
+        if (result == 0) throw new WarrantGrantCaseNotCreatedException(id);
         logger.LogInformation("WarrantGrantCase created.");
 
         return warrantGrantCase;

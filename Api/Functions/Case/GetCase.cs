@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Api.Functions.Employee;
 using Api.Persistence;
 using BlazorApp.Shared;
 using Microsoft.Azure.Functions.Worker;
@@ -7,7 +8,7 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Api;
+namespace Api.Functions.Case;
 
 public class GetCase(AppDbContext dbContext, ILogger<GetEmployee> logger)
 {
