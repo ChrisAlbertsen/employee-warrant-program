@@ -35,7 +35,6 @@ public class ReceiveConfirmationLetterSignature(
 
         confirmationLetter.IsSigned = true;
 
-        var result = dbContext.SaveChanges();
-        if (result != 1) throw new ConfirmationLetterSignatureNotRegistered(id);
+        dbContext.EnsuredSaveChanges();
     }
 }

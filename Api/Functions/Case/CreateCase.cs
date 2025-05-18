@@ -35,8 +35,7 @@ public class CreateCase(AppDbContext dbContext, ILogger<GetEmployee> logger)
         };
 
         dbContext.WarrantGrantCases.Add(warrantGrantCase);
-        var result = await dbContext.SaveChangesAsync();
-        if (result == 0) throw new WarrantGrantCaseNotCreatedException(id);
+        await dbContext.EnsuredSaveChangesAsync();
         logger.LogInformation("WarrantGrantCase created.");
 
         return warrantGrantCase;

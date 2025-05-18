@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using BlazorApp.Shared;
 using Microsoft.EntityFrameworkCore;
 
@@ -77,5 +78,25 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 PhoneNumber = "45678901"
             }
         );
+    }
+    
+    public async Task<int> EnsuredSaveChangesAsync(int minExpectedChanges = 1)
+    {
+        var affectedRows = await SaveChangesAsync();
+
+        if (affectedRows < minExpectedChanges)
+            throw new DbUpdateException(
+                $"Expected at least {minExpectedChanges} database changes, but only {affectedRows} were applied.");
+        return affectedRows;
+    }
+    
+    public int EnsuredSaveChanges(int minExpectedChanges = 1)
+    {
+        var affectedRows = SaveChanges();
+
+        if (affectedRows < minExpectedChanges)
+            throw new DbUpdateException(
+                $"Expected at least {minExpectedChanges} database changes, but only {affectedRows} were applied.");
+        return affectedRows;
     }
 }

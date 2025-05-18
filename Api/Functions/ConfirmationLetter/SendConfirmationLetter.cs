@@ -18,7 +18,6 @@ public class SendConfirmationLetter(AppDbContext dbContext, ILogger<SendConfirma
         IReadOnlyList<SqlChange<BlazorApp.Shared.ConfirmationLetter>> changes,
         FunctionContext context)
     {
-        //TODO: fix culture to use WarrantGrantCases table instead. Is currently throwing "JSON value is not in a supported DateOnly format".
         var insertChanges = changes
             .Where(c => c.Operation == SqlChangeOperation.Insert)
             .ToList();
@@ -41,7 +40,6 @@ public class SendConfirmationLetter(AppDbContext dbContext, ILogger<SendConfirma
     {
         confirmationLetter.IsSent = true;
         dbContext.Attach(confirmationLetter).State = EntityState.Modified;
-        var result = await dbContext.SaveChangesAsync();
-        if (result == 0) throw new ConfirmationLetterUpdateFailedException(confirmationLetter.Id);
+        await dbContext.EnsuredSaveChangesAsync();
     }
 }
